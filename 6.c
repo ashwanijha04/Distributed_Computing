@@ -1,11 +1,20 @@
 #include <stdio.h>
 #include <omp.h>
+#include <stdlib.h>
 
 #define MAX 65536
 
 
-int initialize(int array[MAX]){
-  int numberOfElements
+
+int main(){
+  int *array;
+  int i;
+  int cur_max, cur_value;
+  int numberOfElements;
+
+
+  // Initialize array
+
   printf("Enter the number of elements:\n");
   scanf("%d", &numberOfElements);
 
@@ -23,17 +32,6 @@ int initialize(int array[MAX]){
     array[i] = rand();
   }
 
-}
-
-
-
-int main(int argc, char* argv){
-  int *array;
-  //int i;
-  int cur_max, cur_value;
-
-  initialize(array);
-
   cur_max = 0;
   omp_set_num_threads(8);
 
@@ -42,7 +40,7 @@ int main(int argc, char* argv){
 
   #pragma omp parallel for
 
-  for(int i=0; i<numberOfElements; i++){
+  for(i=0; i<numberOfElements; i++){
     if(array[i]>cur_max){
 			// The critical section will be used if required, thus the two if statements.
 			#pragma omp critical
@@ -72,6 +70,7 @@ int main(int argc, char* argv){
 	}
 
 	free(array);
+  printf("Largest number in the given array is %d\n", cur_max);
 
 
 }
